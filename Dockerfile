@@ -14,7 +14,7 @@ WORKDIR /app
 EXPOSE 8000
 # Copy the requirements file from requirements.txt
 
-ARG Dev=false
+ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
