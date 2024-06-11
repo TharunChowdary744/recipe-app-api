@@ -17,6 +17,7 @@ EXPOSE 8000
 ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    #for data base (installing PostgreSQL database adaptor)
     apk add --update --no-cache postgresql-client && \
     #client package of server
     apk add --update --no-cache --virtual .tmp-build-deps \
@@ -27,6 +28,7 @@ RUN python -m venv /py && \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     rm -rf /tmp && \
+    #for data base (installing PostgreSQL database adaptor) below first line
     apk del .tmp-build-deps && \
     adduser \
         --disabled-password \
