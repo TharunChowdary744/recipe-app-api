@@ -1,7 +1,7 @@
 FROM python:3.9-alpine3.13
 #the above point specify that we are using 3.9 version and alpine version(it is a light weight version of linux)
 
-LABEL maintainer="londonappdeveloper.com"
+LABEL maintainer="tharunchowdary.com"
 #the above point specify that who is maintaining the project
 
 ENV PYTHONUNBUFFERED 1
@@ -18,10 +18,10 @@ ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     #for data base (installing PostgreSQL database adaptor)
-    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache postgresql-client jpeg-dev && \
     #client package of server
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev && \
+        build-base postgresql-dev musl-dev zlib zlib-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     # /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     if [ $DEV = "true" ]; \
@@ -33,7 +33,11 @@ RUN python -m venv /py && \
     adduser \
         --disabled-password \
         --no-create-home \
-        django-user
+        django-user && \
+    mkdir -p /vol/web/media && \
+    mkdir -p /vol/web/static && \
+    chown -R django-user:django-user /vol && \
+    chmod -R 755 /vol \
 
 ENV PATH="/py/bin:$PATH"
 
